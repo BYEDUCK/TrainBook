@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">TrainBook</string>
+    <string name="create_training">Stwórz trening</string>
+    <string name="insert_training_info">Wprowadź informacje o treningu</string>
+    <string name="insert_training_name">Nazwa treningu</string>
+    <string name="insert_training_description">Krótki opis treningu</string>
+    <string name="insert_excercise_info">Wprowadź informacje o ćwiczeniu</string>
+    <string name="insert_excercise_name">Nazwa ćwiczenia</string>
+    <string name="insert_excercise_description">Krótki opis ćwiczenia</string>
+    <string name="title_activity_training_detail">TrainingDetailActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="open_drawer">Otworz szuflade</string>
+    <string name="close_drawer">Zamknij szuflade</string>
+    <string name="add">Dodaj ćwiczenie</string>
+    <string name="choose_break">Wybierz długość przerwy po serii</string>
+    <string name="series_text">Serie:</string>
+    <string name="active_exc_text">Aktywne ćwiczenie:</string>
+    <string-array name="breaks">
+        <item>0,5</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="series">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string name="timer_default">0:30</string>
+    <string name="db_error">Baza danych jest niedostępna!</string>
+    <string name="training_added">Dodano trening: </string>
+    <string name="excercise_added">Dodano ćwiczenie: </string>
+    <string name="next">Następne: </string>
+    <string name="lack">BRAK</string>
+    <string name="lack_of_excercises">Brak kolejnych ćwiczeń w tym treningu</string>
+    <string name="yes">TAK</string>
+    <string name="no">NIE</string>
+    <string name="info">INFO</string>
+    <string name="delete">USUŃ</string>
+    <string name="choose_option">Wybierz opcje:</string>
+    <string name="rem_training">Czy zapisać trening w historii?</string>
+    <string name="active_training">Aktywny trening: </string>
+    <string name="excercises">ćwiczenia</string>
+    <string name="trainings">treningi</string>
+    <string name="history">historia</string>
+
+</resources>
