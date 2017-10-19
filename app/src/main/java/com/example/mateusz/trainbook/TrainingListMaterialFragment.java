@@ -1,6 +1,7 @@
 package com.example.mateusz.trainbook;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -18,23 +19,25 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TrainingListMaterialFragment extends Fragment {
+public class TrainingListMaterialFragment extends Fragment implements MainActivity.IitemRemoved {
 
     private SQLiteDatabase db;
     private Cursor cursor;
+    private RecyclerView recyclerView;
+    private CardTrainingAdapter adapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        RecyclerView recyclerView=(RecyclerView)inflater.inflate(R.layout.fragment_excercise_list_material, container, false);
+        recyclerView=(RecyclerView)inflater.inflate(R.layout.fragment_excercise_list_material, container, false);
 
         try
         {
             SQLiteOpenHelper helper=new TrainingDataBaseHelper(inflater.getContext());
             db=helper.getReadableDatabase();
             cursor=db.query("TRAININGS",new String[]{"TRAINING_NAME","DESCRIPTION"},null,null,null,null,null);
-            CardTrainingAdapter adapter=new CardTrainingAdapter(cursor);
+            adapter=new CardTrainingAdapter(cursor,R.color.colorTain);
             recyclerView.setAdapter(adapter);
             LinearLayoutManager layoutManager=new LinearLayoutManager(inflater.getContext());
             recyclerView.setLayoutManager(layoutManager);
@@ -54,8 +57,22 @@ public class TrainingListMaterialFragment extends Fragment {
     public void onDestroy()
     {
         super.onDestroy();
-        /*db.close();
-        cursor.close();*/
+        db.close();
+        cursor.close();
     }
 
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        MainActivity activity=(MainActivity)context;
+        activity.setIitemRemovedTrain(this);
+    }
+
+    @Override
+    public void itemRemoved(Cursor cursor) {
+        CardTrainingAdapter adapter_new=new CardTrainingAdapter(cursor,R.color.colorTain);
+        recyclerView.swapAdapter(adapter_new,false);
+        adapter=adapter_new;
+    }
 }

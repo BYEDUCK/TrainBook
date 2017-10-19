@@ -45,5 +45,6 @@
     <string name="excercises">ćwiczenia</string>
     <string name="trainings">treningi</string>
     <string name="history">historia</string>
+    <string name="train_name_error">Nazwa treningu musi zaczynać się od litery i nie może być pusta!</string>
 
 </resources>

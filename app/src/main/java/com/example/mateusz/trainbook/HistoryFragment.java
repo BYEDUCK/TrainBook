@@ -2,6 +2,7 @@ package com.example.mateusz.trainbook;
 
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -18,21 +19,23 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements MainActivity.IitemRemoved {
 
     private SQLiteDatabase db;
     private Cursor cursor;
+    private RecyclerView history_recycler;
+    private CardTrainingAdapter adapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        RecyclerView history_recycler = (RecyclerView) inflater.inflate(R.layout.fragment_history, container, false);
+        history_recycler = (RecyclerView) inflater.inflate(R.layout.fragment_history, container, false);
         try {
             TrainingDataBaseHelper helper = new TrainingDataBaseHelper(inflater.getContext());
             db = helper.getReadableDatabase();
             cursor = db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
-            CardTrainingAdapter adapter = new CardTrainingAdapter(cursor);
+            adapter = new CardTrainingAdapter(cursor,R.color.colorHist);
             history_recycler.setAdapter(adapter);
             LinearLayoutManager manager = new LinearLayoutManager(inflater.getContext());
             history_recycler.setLayoutManager(manager);
@@ -43,4 +46,18 @@ public class HistoryFragment extends Fragment {
         return history_recycler;
     }
 
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        MainActivity activity=(MainActivity)context;
+        activity.setIitemRemovedHist(this);
+    }
+
+    @Override
+    public void itemRemoved(Cursor cursor) {
+        CardTrainingAdapter adapter_new=new CardTrainingAdapter(cursor,R.color.colorHist);
+        history_recycler.swapAdapter(adapter_new,false);
+        adapter=adapter_new;
+    }
 }

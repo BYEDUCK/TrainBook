@@ -3,6 +3,8 @@ package com.example.mateusz.trainbook;
 import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 /**
  * Created by Mateusz on 2017-08-24.
@@ -11,7 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class PagerAdapter extends FragmentPagerAdapter {
 
 
-    private Fragment fragment;
+    //private Fragment fragment;
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
     public PagerAdapter(android.support.v4.app.FragmentManager fm)
     {
@@ -23,14 +26,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case(0):
-                fragment=new ExcerciseListMaterialFragment();
-                return fragment;
+                return new ExcerciseListMaterialFragment();
             case(1):
-                fragment=new TrainingListMaterialFragment();
-                return fragment;
+                return new TrainingListMaterialFragment();
             case (2):
-                fragment=new HistoryFragment();
-                return fragment;
+                return new HistoryFragment();
             default:
                 return null;
         }
@@ -55,5 +55,22 @@ public class PagerAdapter extends FragmentPagerAdapter {
             default:
                 return "";
         }
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
     }
 }

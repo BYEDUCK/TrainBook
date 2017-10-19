@@ -10,12 +10,12 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#d4ffb5">
+        android:id="@+id/card_layout">
 
 
         <TextView
             android:id="@+id/textView_name"
+            android:textColor="#ffffff"
             android:textStyle="bold"
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceLargePopupMenu"
@@ -46,6 +46,7 @@
             android:id="@+id/textView_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#ffffff"
             android:text=""
             android:textAppearance="?attr/textAppearanceLargePopupMenu"
             android:layout_marginTop="8dp"

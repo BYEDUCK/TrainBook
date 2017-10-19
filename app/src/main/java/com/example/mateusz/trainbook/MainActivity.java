@@ -5,31 +5,76 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-
-public class MainActivity extends AppCompatActivity implements CardTrainingAdapter.iButtonClicked,CardTrainingAdapter.icardListener {
+public class MainActivity extends AppCompatActivity implements CardTrainingAdapter.iButtonClicked,CardTrainingAdapter.icardListener{
 
     private TabLayout tabLayout;
     private int currentTab;
     private SQLiteDatabase db;
     private Cursor cursor_new;
     private TrainingDataBaseHelper helper;
+    private PagerAdapter pagerAdapter;
+
+    public static interface IitemRemoved
+    {
+        void itemRemoved(Cursor cursor);
+    }
+    private IitemRemoved iitemRemovedExc;
+    private IitemRemoved iitemRemovedTrain;
+    private IitemRemoved iitemRemovedHist;
+
+    public void setIitemRemovedExc(IitemRemoved iitemRemovedExc)
+    {
+        this.iitemRemovedExc = iitemRemovedExc;
+    }
+    public void setIitemRemovedTrain(IitemRemoved iitemRemovedTrain)
+    {
+        this.iitemRemovedTrain = iitemRemovedTrain;
+    }
+    public void setIitemRemovedHist(IitemRemoved iitemRemovedHist)
+    {
+        this.iitemRemovedHist = iitemRemovedHist;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PagerAdapter pagerAdapter=new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter=new PagerAdapter(getSupportFragmentManager());
         ViewPager viewPager=(ViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);//utworzenie elementu ViewPager
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);//połączenie go z elementem TabLayout
+        final FloatingActionButton button=(FloatingActionButton)findViewById(R.id.add_fbutton);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position==2)
+                    button.setImageResource(R.drawable.minus_icon);
+                else
+                    button.setImageResource(R.drawable.add_icon);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==2)
+                    button.setImageResource(R.drawable.minus_icon);
+                else
+                    button.setImageResource(R.drawable.add_icon);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         try
         {
             helper = new TrainingDataBaseHelper(this);
@@ -66,6 +111,10 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
                 startActivity(intent);
                 break;
             default:
+                db.delete("HISTORY",null,null);
+                cursor_new=db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
+                if(iitemRemovedHist!=null)
+                    iitemRemovedHist.itemRemoved(cursor_new);
                 break;
         }
     }
@@ -85,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
                     if (cursor_new.move(position + 1))
                         exc_name = cursor_new.getString(0);//pobranie nazwy wybranego cwiczenia
                     db.delete("EXCERCISES", "NAME=?", new String[]{exc_name});//usuniecie wybranego cwiczenia z bazy
+                    cursor_new = db.query("EXCERCISES", new String[]{"NAME", "DESCRIPTION"}, null, null, null, null, null);
+                    if(iitemRemovedExc !=null)
+                        iitemRemovedExc.itemRemoved(cursor_new);
                     break;
                 case (1):
                     String trainingName = "";
@@ -93,9 +145,19 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
                         trainingName = cursor_new.getString(0);
                     db.execSQL("DROP TABLE " + trainingName + ";");
                     db.delete("TRAININGS", "TRAINING_NAME=?", new String[]{trainingName});
+                    cursor_new = db.query("TRAININGS", new String[]{"TRAINING_NAME","DESCRIPTION"}, null, null, null, null, null);
+                    if(iitemRemovedTrain!=null)
+                        iitemRemovedTrain.itemRemoved(cursor_new);
                     break;
                 case (2):
-                    db.delete("HISTORY",null,null);
+                    String histDate="";
+                    cursor_new=db.query("HISTORY",new String[]{"DATE"},null,null,null,null,null);
+                    if(cursor_new.move(position+1))
+                        histDate=cursor_new.getString(0);
+                    db.delete("HISTORY","DATE=?",new String[]{histDate});
+                    cursor_new=db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
+                    if(iitemRemovedHist!=null)
+                        iitemRemovedHist.itemRemoved(cursor_new);
                     break;
                 default:
                     break;
@@ -135,4 +197,5 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
                 break;
         }
     }
+
 }

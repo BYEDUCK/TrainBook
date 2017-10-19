@@ -2,6 +2,7 @@ package com.example.mateusz.trainbook;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ public class CardTrainingAdapter extends RecyclerView.Adapter<CardTrainingAdapte
     private Cursor cursor;
     private String up;
     private String down;
+    private int color;
+    private CardView cv;
     static interface iButtonClicked//przy kliknięciu "kosza" na karcie
     {
         void buttonClicked(int position);
@@ -30,14 +33,31 @@ public class CardTrainingAdapter extends RecyclerView.Adapter<CardTrainingAdapte
     }
     private iButtonClicked listener;
     private icardListener c_listener;
-    public CardTrainingAdapter(Cursor cursor)
+    public CardTrainingAdapter(Cursor cursor,int color)
     {
         this.cursor=cursor;
+        this.color=color;
     }//konstruktor
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_training,parent,false);
+        switch (color)
+        {
+            case (R.color.colorExc):
+                cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_training_exc,parent,false);
+                break;
+            case (R.color.colorTain):
+                cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_training_train,parent,false);
+                break;
+            case (R.color.colorHist):
+                cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_training_hist,parent,false);
+                break;
+            default:
+                cv=(CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_training,parent,false);
+                break;
+        }
         return new ViewHolder(cv);
     }
 

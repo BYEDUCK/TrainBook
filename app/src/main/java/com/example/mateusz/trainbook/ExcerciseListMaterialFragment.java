@@ -1,6 +1,7 @@
 package com.example.mateusz.trainbook;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExcerciseListMaterialFragment extends Fragment{
+public class ExcerciseListMaterialFragment extends Fragment implements MainActivity.IitemRemoved{
 
 
     private SQLiteDatabase db;
@@ -37,7 +38,7 @@ public class ExcerciseListMaterialFragment extends Fragment{
             SQLiteOpenHelper helper=new TrainingDataBaseHelper(inflater.getContext());
             db=helper.getReadableDatabase();
             cursor=db.query("EXCERCISES",new String[]{"NAME","DESCRIPTION"},null,null,null,null,null);
-            adapter=new CardTrainingAdapter(cursor);
+            adapter=new CardTrainingAdapter(cursor,R.color.colorExc);
             recyclerView.setAdapter(adapter);
             LinearLayoutManager layoutManager=new LinearLayoutManager(inflater.getContext());
             recyclerView.setLayoutManager(layoutManager);
@@ -56,16 +57,24 @@ public class ExcerciseListMaterialFragment extends Fragment{
     public void onDestroy()
     {
         super.onDestroy();
-        //db.close();
-        //cursor.close();
+        db.close();
+        cursor.close();
     }
-    /*public void removeExcercise(int position)
+
+    @Override
+    public void onAttach(Context context)
     {
-        recyclerView=(RecyclerView)getView().findViewById(R.id.excercises_recycler);
-        recyclerView.removeViewAt(position);
-        adapter.notifyItemRemoved(position);
-        adapter.notifyItemRangeChanged(position,cursor.getCount());
-    }*/
+        super.onAttach(context);
+        MainActivity activity=(MainActivity)context;
+        activity.setIitemRemovedExc(this);
+    }
 
-
+    @Override
+    public void itemRemoved(Cursor cursor) {
+        //adapter.notifyItemRemoved(position);
+        //adapter.notifyItemRangeChanged(position,range);
+        CardTrainingAdapter adapter_new=new CardTrainingAdapter(cursor,R.color.colorExc);
+        recyclerView.swapAdapter(adapter_new,false);
+        adapter=adapter_new;
+    }
 }

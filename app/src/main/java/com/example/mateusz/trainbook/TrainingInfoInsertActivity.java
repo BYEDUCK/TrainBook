@@ -26,21 +26,34 @@ public class TrainingInfoInsertActivity extends AppCompatActivity {
         EditText trainingDescriptionText=(EditText)findViewById(R.id.input_training_description);
         String trainingName=trainingNameText.getText().toString();
         String trainingDescription=trainingDescriptionText.getText().toString();
-        try
+        if(trainingName.isEmpty())
         {
-            TrainingDataBaseHelper helper=new TrainingDataBaseHelper(this);
-            db=helper.getWritableDatabase();
-            helper.insertTraining(db,trainingName,trainingDescription);
-            db.close();
-        }
-        catch (SQLiteException e)
-        {
-            Toast toast=Toast.makeText(this,getString(R.string.db_error),Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, getString(R.string.train_name_error), Toast.LENGTH_SHORT);
             toast.show();
+            trainingDescriptionText.setText("");
         }
-        Toast toast=Toast.makeText(this,getString(R.string.training_added)+trainingName,Toast.LENGTH_SHORT);
-        toast.show();
-        trainingNameText.setText("");
-        trainingDescriptionText.setText("");
+        else {
+            int firstChar = trainingName.charAt(0);
+            if ((firstChar >= 64 && firstChar <= 90) || (firstChar >= 97 && firstChar <= 122)) {
+                try {
+                    TrainingDataBaseHelper helper = new TrainingDataBaseHelper(this);
+                    db = helper.getWritableDatabase();
+                    helper.insertTraining(db, trainingName, trainingDescription);
+                    db.close();
+                } catch (SQLiteException e) {
+                    Toast toast = Toast.makeText(this, getString(R.string.db_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                Toast toast = Toast.makeText(this, getString(R.string.training_added) + trainingName, Toast.LENGTH_SHORT);
+                toast.show();
+                trainingNameText.setText("");
+                trainingDescriptionText.setText("");
+            } else {
+                Toast toast = Toast.makeText(this, getString(R.string.train_name_error), Toast.LENGTH_SHORT);
+                toast.show();
+                trainingNameText.setText("");
+                trainingDescriptionText.setText("");
+            }
+        }
     }
 }

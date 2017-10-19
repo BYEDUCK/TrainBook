@@ -65,15 +65,17 @@ public class ActiveTrainingActivity extends AppCompatActivity {
                     0);
             spinner.setAdapter(spinnerAdapter);
 
-            cursor_list = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
-            CursorAdapter listAdapter = new SimpleCursorAdapter(this,
+            //cursor_list = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
+            cursor_list=db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
+            ActiveTrainingAdapter adapter=new ActiveTrainingAdapter(this,cursor_list,0);
+            /*CursorAdapter listAdapter = new SimpleCursorAdapter(this,
                     android.R.layout.simple_list_item_1,
                     cursor_list,
                     new String[]{"NAME"},
                     new int[]{android.R.id.text1},
-                    0);
+                    0);*/
             listView = (ListView) findViewById(R.id.excercise_list);
-            listView.setAdapter(listAdapter);
+            listView.setAdapter(adapter);
         } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this,getString(R.string.db_error), Toast.LENGTH_SHORT);
             toast.show();
@@ -133,7 +135,7 @@ public class ActiveTrainingActivity extends AppCompatActivity {
             db.insert(trainingName, null, contentValues);
             cursor.close();
 
-            cursor_list_new = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
+            cursor_list_new = db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
             CursorAdapter adapter = (CursorAdapter) listView.getAdapter();
             cursor_list = cursor_list_new;
             adapter.changeCursor(cursor_list);
@@ -175,7 +177,7 @@ public class ActiveTrainingActivity extends AppCompatActivity {
                         break;
                     case (1):
                         db.delete(trainingName, "EXCERCISE_id=?", new String[]{Long.toString(_id)});
-                        cursor_list_new = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
+                        cursor_list_new = db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
                         CursorAdapter adapter = (CursorAdapter) listView.getAdapter();
                         cursor_list = cursor_list_new;
                         adapter.changeCursor(cursor_list);

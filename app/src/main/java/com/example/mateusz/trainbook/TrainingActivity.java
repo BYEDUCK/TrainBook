@@ -139,63 +139,77 @@ public class TrainingActivity extends AppCompatActivity {
     //po klknięciu radiobuttonów
     public void onClickRButton1(View view)
     {
-        if(!running)
-        {
+        if(!running) {
             running=true;
             runTimer();
         }
-        else
-        {
+        else {
             seconds=mSecs;
+        }
+        if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
+        {
+            Dialog dialog=createAlterDialog();
+            dialog.show();//wyświetl okno dialogowe
         }
     }
     public void onClickRButton2(View view)
     {
-        if(!running)
-        {
+        if(!running) {
             running=true;
             runTimer();
         }
-        else
-        {
+        else {
             seconds=mSecs;
         }
-
+        if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
+        {
+            Dialog dialog=createAlterDialog();
+            dialog.show();//wyświetl okno dialogowe
+        }
     }
     public void onClickRButton3(View view)
     {
-        if(!running)
-        {
+        if(!running) {
             running=true;
             runTimer();
         }
-        else
-        {
+        else {
             seconds=mSecs;
+        }
+        if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
+        {
+            Dialog dialog=createAlterDialog();
+            dialog.show();//wyświetl okno dialogowe
         }
     }
     public void onClickRButton4(View view)
     {
-        if(!running)
-        {
+        if(!running) {
             running=true;
             runTimer();
         }
-        else
-        {
+        else {
             seconds=mSecs;
+        }
+        if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
+        {
+            Dialog dialog=createAlterDialog();
+            dialog.show();//wyświetl okno dialogowe
         }
     }
     public void onClickRButton5(View view)
     {
-        if(!running)
-        {
+        if(!running) {
             running=true;
             runTimer();
         }
-        else
-        {
+        else {
             seconds=mSecs;
+        }
+        if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
+        {
+            Dialog dialog=createAlterDialog();
+            dialog.show();//wyświetl okno dialogowe
         }
     }
     private void runTimer()
@@ -210,11 +224,6 @@ public class TrainingActivity extends AppCompatActivity {
                     seconds=mSecs;//zresetuj sekundy
                     MediaPlayer mp=MediaPlayer.create(getApplicationContext(),R.raw.alarm);
                     mp.start();//odtwórz dźwięk
-                    if(thersnonext && areAllChecked())//jeśli ostatnie ćwiczenie i wszystkie serie
-                    {
-                        Dialog dialog=createAlterDialog();
-                        dialog.show();//wyświetl okno dialogowe
-                    }
                 }
                 minutes=seconds/60;
                 secs=seconds%60;
