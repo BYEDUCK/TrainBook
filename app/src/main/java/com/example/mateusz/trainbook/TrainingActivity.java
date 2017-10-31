@@ -28,7 +28,7 @@ import java.util.Date;
 public class TrainingActivity extends AppCompatActivity {
 
     public static final String EXTRA_TRAINING_NAME="extraTrainingName";
-    public static final String EXTRA_TRAINING_DESCRIPTION="exctraTrainingDescription";
+    public static final String EXTRA_TRAINING_DESCRIPTION="extraTrainingDescription";
     private String trainingName;
     private String trainingDescription;
     private TextView timer;
@@ -241,12 +241,12 @@ public class TrainingActivity extends AppCompatActivity {
     {
         TextView excName=(TextView)findViewById(R.id.active_exc_name);
         TextView nextExcNameText=(TextView)findViewById(R.id.next_exc_name);
-        if(cursor.moveToNext())
+        if(cursor.moveToNext())//jesli jest nastepne cwiczenie
         {
             nextExcNameText.setText(getString(R.string.next)+cursor.getString(0));
             cursor.moveToPrevious();
         }
-        else
+        else//w przeciwnym wypadku
         {
             nextExcNameText.setText(getString(R.string.next)+getString(R.string.lack));
             thersnonext=true;
@@ -254,7 +254,7 @@ public class TrainingActivity extends AppCompatActivity {
         excName.setText(actExcName);
         switch (actExcSeries)//ustawienie odpowiedniej ilości radiobuttonów (w zależności od serii)
         {
-            case 1://np. jeśli jedna seria: jeden przycisk jest widoczny, reszta niewidoczna - zazanczona w celu rozpoznania kiedy koniec
+            case 1://np. jeśli jedna seria: jeden przycisk jest widoczny, reszta niewidoczna - zaznaczona w celu rozpoznania kiedy koniec
                 RB3.setVisibility(View.VISIBLE);
                 RB1.setVisibility(View.INVISIBLE);
                 RB2.setVisibility(View.INVISIBLE);
@@ -367,6 +367,8 @@ public class TrainingActivity extends AppCompatActivity {
                         }
                         break;
                     case 1:
+                        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
                         break;
                 }
             }

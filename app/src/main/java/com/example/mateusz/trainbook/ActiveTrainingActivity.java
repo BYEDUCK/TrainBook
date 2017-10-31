@@ -157,11 +157,11 @@ public class ActiveTrainingActivity extends AppCompatActivity {
 
     public void onClickStart(View v)//po kliknięciu przycisku "start"
     {
-        Intent intent=new Intent(this,TrainingActivity.class);
+        Intent intent=new Intent(this,newTrainingActivity.class);
         intent.putExtra(TrainingActivity.EXTRA_TRAINING_NAME,trainingName);
-        intent.putExtra(TrainingActivity.EXTRA_TRAINING_DESCRIPTION,trainingDescription);
         startActivity(intent);
     }
+
 
     private Dialog createAlterDialog(long id)//tworzenie okna dialogowego
     {

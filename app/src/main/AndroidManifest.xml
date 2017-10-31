@@ -25,11 +25,12 @@
         <activity
             android:name=".ActiveTrainingActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".TrainingActivity"
+        <activity
+            android:name=".TrainingActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:showOnLockScreen="true"></activity>
+        <activity android:name=".newTrainingActivity"></activity>
     </application>
 
 </manifest>
