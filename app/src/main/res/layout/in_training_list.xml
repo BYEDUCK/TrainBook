@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/exc_name_inTraining"
-        android:textSize="20dp"
+        android:textSize="17dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

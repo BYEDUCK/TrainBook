@@ -1,5 +1,7 @@
 package com.example.mateusz.trainbook;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,8 +10,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CursorAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CardTrainingAdapter.iButtonClicked,CardTrainingAdapter.icardListener{
@@ -111,10 +115,12 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
                 startActivity(intent);
                 break;
             default:
-                db.delete("HISTORY",null,null);
+                Dialog dialog=createAlterDialog();
+                dialog.show();
+                /*db.delete("HISTORY",null,null);
                 cursor_new=db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
                 if(iitemRemovedHist!=null)
-                    iitemRemovedHist.itemRemoved(cursor_new);
+                    iitemRemovedHist.itemRemoved(cursor_new);*/
                 break;
         }
     }
@@ -196,6 +202,31 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
             default:
                 break;
         }
+    }
+
+    private Dialog createAlterDialog()//tworzenie okna dialogowego
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final String[] options = new String[]{getString(R.string.yes),getString(R.string.no)};
+        dialogBuilder.setTitle(getString(R.string.delete_history));
+        dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case (0):
+                        db.delete("HISTORY",null,null);
+                        cursor_new=db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
+                        if(iitemRemovedHist!=null)
+                            iitemRemovedHist.itemRemoved(cursor_new);
+                        break;
+                    case (1):
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        return dialogBuilder.create();
     }
 
 }

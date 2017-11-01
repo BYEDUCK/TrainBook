@@ -20,6 +20,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class ActiveTrainingActivity extends AppCompatActivity {
 
     public static final String EXTRA_TRAININGID = "trainingId";
@@ -31,6 +33,7 @@ public class ActiveTrainingActivity extends AppCompatActivity {
     private String trainingName;//nazwa aktualnego treningu
     private String trainingDescription;//opis aktualnego treningu
     private ListView listView;//lista ćwiczeń
+    private ActiveTrainingAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,7 @@ public class ActiveTrainingActivity extends AppCompatActivity {
 
             //cursor_list = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
             cursor_list=db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
-            ActiveTrainingAdapter adapter=new ActiveTrainingAdapter(this,cursor_list,0);
+            adapter=new ActiveTrainingAdapter(this,cursor_list,0);
             /*CursorAdapter listAdapter = new SimpleCursorAdapter(this,
                     android.R.layout.simple_list_item_1,
                     cursor_list,
@@ -157,6 +160,17 @@ public class ActiveTrainingActivity extends AppCompatActivity {
 
     public void onClickStart(View v)//po kliknięciu przycisku "start"
     {
+        /*ArrayList<View> views=adapter.getViews();
+        int i=1;
+        for (View view:views
+             ) {
+            Spinner spinner=(Spinner)view.findViewById(R.id.spinChooseSeries);
+            int id=spinner.getId();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put("SERIES",id+1);
+            db.update(trainingName,contentValues,"_id=?",new String[]{Integer.toString(i)});
+            i++;
+        }*/
         Intent intent=new Intent(this,newTrainingActivity.class);
         intent.putExtra(TrainingActivity.EXTRA_TRAINING_NAME,trainingName);
         startActivity(intent);
@@ -166,7 +180,7 @@ public class ActiveTrainingActivity extends AppCompatActivity {
     private Dialog createAlterDialog(long id)//tworzenie okna dialogowego
     {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final String[] options = new String[]{getString(R.string.info), getString(R.string.delete)};
+        final String[] options = new String[]{getString(R.string.delete)};
         final long _id = id;
         dialogBuilder.setTitle(getString(R.string.choose_option));
         dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
@@ -174,8 +188,6 @@ public class ActiveTrainingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case (0):
-                        break;
-                    case (1):
                         db.delete(trainingName, "EXCERCISE_id=?", new String[]{Long.toString(_id)});
                         cursor_list_new = db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
                         CursorAdapter adapter = (CursorAdapter) listView.getAdapter();
