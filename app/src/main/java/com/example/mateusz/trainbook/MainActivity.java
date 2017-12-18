@@ -117,10 +117,6 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
             default:
                 Dialog dialog=createAlterDialog();
                 dialog.show();
-                /*db.delete("HISTORY",null,null);
-                cursor_new=db.query("HISTORY", new String[]{"TRAINING", "DATE"}, null, null, null, null, null);
-                if(iitemRemovedHist!=null)
-                    iitemRemovedHist.itemRemoved(cursor_new);*/
                 break;
         }
     }
@@ -174,17 +170,6 @@ public class MainActivity extends AppCompatActivity implements CardTrainingAdapt
             Toast toast=Toast.makeText(this,getString(R.string.db_error),Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        /*if(cursor_new!=null && db!=null)//nothing's happening -_-
-        {
-            cursor_new.close();
-            db.close();
-        }*/
     }
 
     @Override

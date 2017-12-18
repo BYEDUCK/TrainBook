@@ -68,15 +68,8 @@ public class ActiveTrainingActivity extends AppCompatActivity {
                     0);
             spinner.setAdapter(spinnerAdapter);
 
-            //cursor_list = db.rawQuery("SELECT EXCERCISES._id,NAME FROM EXCERCISES, " + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
             cursor_list=db.rawQuery("SELECT EXCERCISES._id, NAME,SERIES FROM EXCERCISES," + trainingName + " WHERE EXCERCISES._id=EXCERCISE_ID", null);
             adapter=new ActiveTrainingAdapter(this,cursor_list,0);
-            /*CursorAdapter listAdapter = new SimpleCursorAdapter(this,
-                    android.R.layout.simple_list_item_1,
-                    cursor_list,
-                    new String[]{"NAME"},
-                    new int[]{android.R.id.text1},
-                    0);*/
             listView = (ListView) findViewById(R.id.excercise_list);
             listView.setAdapter(adapter);
         } catch (SQLiteException e) {
@@ -150,27 +143,8 @@ public class ActiveTrainingActivity extends AppCompatActivity {
         }
     }
 
-    public void onDestroy() {
-        super.onDestroy();
-        //db.close();
-        //cursor_list.close();
-        //cursor_spinner.close();
-        //cursor_list_new.close();
-    }
-
     public void onClickStart(View v)//po kliknięciu przycisku "start"
     {
-        /*ArrayList<View> views=adapter.getViews();
-        int i=1;
-        for (View view:views
-             ) {
-            Spinner spinner=(Spinner)view.findViewById(R.id.spinChooseSeries);
-            int id=spinner.getId();
-            ContentValues contentValues=new ContentValues();
-            contentValues.put("SERIES",id+1);
-            db.update(trainingName,contentValues,"_id=?",new String[]{Integer.toString(i)});
-            i++;
-        }*/
         Intent intent=new Intent(this,newTrainingActivity.class);
         intent.putExtra(TrainingActivity.EXTRA_TRAINING_NAME,trainingName);
         startActivity(intent);

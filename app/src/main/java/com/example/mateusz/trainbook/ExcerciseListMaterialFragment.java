@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ExcerciseListMaterialFragment extends Fragment implements MainActivity.IitemRemoved{
 
 
@@ -71,8 +68,6 @@ public class ExcerciseListMaterialFragment extends Fragment implements MainActiv
 
     @Override
     public void itemRemoved(Cursor cursor) {
-        //adapter.notifyItemRemoved(position);
-        //adapter.notifyItemRangeChanged(position,range);
         CardTrainingAdapter adapter_new=new CardTrainingAdapter(cursor,R.color.colorExc);
         recyclerView.swapAdapter(adapter_new,false);
         adapter=adapter_new;

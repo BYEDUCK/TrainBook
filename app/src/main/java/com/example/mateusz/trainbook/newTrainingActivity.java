@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -54,6 +55,7 @@ public class newTrainingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_training);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//ekran ciągle włączony
         RB1=(RadioButton)findViewById(R.id.radioButton1);
         RB2=(RadioButton)findViewById(R.id.radioButton2);
         RB3=(RadioButton)findViewById(R.id.radioButton3);
@@ -62,7 +64,7 @@ public class newTrainingActivity extends AppCompatActivity {
         timer=(TextView)findViewById(R.id.timer_text);
         seconds=30;//domyśla długość przerwy
         mSecs=seconds;
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");//pobranie aktualnej daty
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd kk:mm");//pobranie aktualnej daty
         date=dateFormat.format(new Date());
         trainingName=getIntent().getStringExtra(EXTRA_TRAINING_NAME);
         listView=(ListView)findViewById(R.id.exercises_in_train_list);

@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TrainingListMaterialFragment extends Fragment implements MainActivity.IitemRemoved {
 
     private SQLiteDatabase db;
